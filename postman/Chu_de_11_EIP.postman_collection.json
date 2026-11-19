@@ -1,0 +1,1284 @@
+{
+  "info": {
+    "name": "Chủ đề 11 - EIP Integration Adapter",
+    "description": "Giả lập 3 kênh đăng ký của Academic (Portal, Mobile, Legacy) gửi phiếu tới Integration Adapter.\n\n**Cách chạy:** xóa thư mục `runtime/`, bật Finance (cổng 5001) và Adapter (cổng 5000), rồi dùng **Run collection** cho các thư mục 0 đến 5 theo đúng thứ tự. Thư mục 6 chạy tay từng request theo hướng dẫn trong mô tả của từng request.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "adapter_url",
+      "value": "http://127.0.0.1:5000"
+    },
+    {
+      "key": "finance_url",
+      "value": "http://127.0.0.1:5001"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Kiểm tra dịch vụ",
+      "description": "Hai dịch vụ phải đang chạy.",
+      "item": [
+        {
+          "name": "Adapter /health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"status = ok\", () => pm.expect(pm.response.json().status).to.eql(\"ok\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "description": "",
+            "url": {
+              "raw": "{{adapter_url}}/health",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Finance /health",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"status = ok\", () => pm.expect(pm.response.json().status).to.eql(\"ok\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "description": "",
+            "url": {
+              "raw": "{{finance_url}}/health",
+              "host": [
+                "{{finance_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "1. Ba định dạng, cùng một đăng ký (SV001)",
+      "description": "Ba phiếu cùng nội dung SV001 - INT3306 - 3 tín chỉ, gửi qua 3 kênh khác nhau. Phiếu đầu tiên tạo khoản học phí, hai phiếu sau bị Finance nhận ra là trùng (BR-08).",
+      "item": [
+        {
+          "name": "Portal - JSON phẳng (SV001)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/a_portal_01_sv001.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1001\",\n  \"studentId\": \"SV001\",\n  \"fullName\": \"Nguyễn Văn A\",\n  \"email\": \"sv001@student.example.com\",\n  \"phone\": \"0900000001\",\n  \"courseCode\": \"INT3306\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T08:30:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mobile - JSON lồng (SV001, trùng)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = DUPLICATE_IGNORED\", () => pm.expect(body.status).to.eql(\"DUPLICATE_IGNORED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/b_mobile_01_sv001.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meta\": { \"id\": \"M-2001\", \"ts\": \"02/11/2026 08:30\" },\n  \"student\": {\n    \"code\": \"sv001\",\n    \"name\": \"Nguyễn Văn A\",\n    \"contact\": { \"email\": \"sv001@student.example.com\", \"phone\": \"0900000001\" }\n  },\n  \"enrollment\": { \"course\": \"int3306\", \"creditCount\": \"3\", \"term\": \"2026-1\" },\n  \"device\": { \"os\": \"Android\", \"appVersion\": \"2.3.1\" }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Legacy - XML (SV001, trùng)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = DUPLICATE_IGNORED\", () => pm.expect(body.status).to.eql(\"DUPLICATE_IGNORED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/c_legacy_01_sv001.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-3001\">\n  <SinhVien ma=\"SV001\">\n    <HoTen>Nguyễn Văn A</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"INT3306\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Các phiếu hợp lệ còn lại",
+      "description": "9 sinh viên SV002 đến SV010, mỗi kênh 3 phiếu.",
+      "item": [
+        {
+          "name": "Portal SV002 INT2204",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/a_portal_02_sv002.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1002\",\n  \"studentId\": \"SV002\",\n  \"fullName\": \"Sinh Viên 002\",\n  \"email\": \"sv002@student.example.com\",\n  \"phone\": \"0900000002\",\n  \"courseCode\": \"INT2204\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Portal SV003 INT3319",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/a_portal_03_sv003.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1003\",\n  \"studentId\": \"SV003\",\n  \"fullName\": \"Sinh Viên 003\",\n  \"email\": \"sv003@student.example.com\",\n  \"phone\": \"0900000003\",\n  \"courseCode\": \"INT3319\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Portal SV004 MAT1041",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/a_portal_04_sv004.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1004\",\n  \"studentId\": \"SV004\",\n  \"fullName\": \"Sinh Viên 004\",\n  \"email\": \"sv004@student.example.com\",\n  \"phone\": \"0900000004\",\n  \"courseCode\": \"MAT1041\",\n  \"credits\": 4,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mobile SV005 INT3117",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/b_mobile_02_sv005.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meta\": {\n    \"id\": \"M-2002\",\n    \"ts\": \"02/11/2026 09:15\"\n  },\n  \"student\": {\n    \"code\": \"sv005\",\n    \"name\": \"Sinh Viên 005\",\n    \"contact\": {\n      \"email\": \"sv005@student.example.com\",\n      \"phone\": \"0900000005\"\n    }\n  },\n  \"enrollment\": {\n    \"course\": \"int3117\",\n    \"creditCount\": \"3\",\n    \"term\": \"2026-1\"\n  },\n  \"device\": {\n    \"os\": \"iOS\",\n    \"appVersion\": \"2.3.1\"\n  }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mobile SV006 INT3306",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/b_mobile_03_sv006.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meta\": {\n    \"id\": \"M-2003\",\n    \"ts\": \"02/11/2026 09:15\"\n  },\n  \"student\": {\n    \"code\": \"sv006\",\n    \"name\": \"Sinh Viên 006\",\n    \"contact\": {\n      \"email\": \"sv006@student.example.com\",\n      \"phone\": \"0900000006\"\n    }\n  },\n  \"enrollment\": {\n    \"course\": \"int3306\",\n    \"creditCount\": \"3\",\n    \"term\": \"2026-1\"\n  },\n  \"device\": {\n    \"os\": \"iOS\",\n    \"appVersion\": \"2.3.1\"\n  }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Mobile SV007 INT2204",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/b_mobile_04_sv007.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meta\": {\n    \"id\": \"M-2004\",\n    \"ts\": \"02/11/2026 09:15\"\n  },\n  \"student\": {\n    \"code\": \"sv007\",\n    \"name\": \"Sinh Viên 007\",\n    \"contact\": {\n      \"email\": \"sv007@student.example.com\",\n      \"phone\": \"0900000007\"\n    }\n  },\n  \"enrollment\": {\n    \"course\": \"int2204\",\n    \"creditCount\": \"3\",\n    \"term\": \"2026-1\"\n  },\n  \"device\": {\n    \"os\": \"iOS\",\n    \"appVersion\": \"2.3.1\"\n  }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Legacy SV008 INT3319",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/c_legacy_02_sv008.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-3002\">\n  <SinhVien ma=\"SV008\">\n    <HoTen>Sinh Viên 008</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"INT3319\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Legacy SV009 MAT1041",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/c_legacy_03_sv009.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-3003\">\n  <SinhVien ma=\"SV009\">\n    <HoTen>Sinh Viên 009</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"MAT1041\" soTinChi=\"4\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Legacy SV010 INT3117",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/c_legacy_04_sv010.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-3004\">\n  <SinhVien ma=\"SV010\">\n    <HoTen>Sinh Viên 010</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"INT3117\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Kiểm tra dữ liệu trong Finance",
+      "description": "Sau thư mục 1 và 2: 10 khoản, tổng 15.200.000 VND.",
+      "item": [
+        {
+          "name": "Danh sách khoản học phí",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const list = pm.response.json();",
+                  "pm.test(\"Finance có 10 khoản học phí\", () => pm.expect(list.length).to.eql(10));",
+                  "pm.test(\"Tổng tiền = 15,200,000 VND\".replace(/,/g, \".\"), () => pm.expect(list.reduce((s, c) => s + c.amount, 0)).to.eql(15200000));",
+                  "pm.test(\"Mọi khoản đều UNPAID\", () => list.forEach(c => pm.expect(c.payment_status).to.eql(\"UNPAID\")));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "description": "",
+            "url": {
+              "raw": "{{finance_url}}/api/tuition-charges",
+              "host": [
+                "{{finance_url}}"
+              ],
+              "path": [
+                "api",
+                "tuition-charges"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Phiếu lỗi (X1 - X5)",
+      "description": "Mỗi phiếu kích hoạt đúng 1 mã lỗi. Không phiếu nào được tới Finance.",
+      "item": [
+        {
+          "name": "X1 - Thiếu trường bắt buộc",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = MISSING_FIELD\", () => pm.expect(body.error_code).to.eql(\"MISSING_FIELD\"));",
+                  "pm.test(\"field = course_code\", () => pm.expect(body.field).to.eql(\"course_code\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Phiếu Portal không có `courseCode`.\n\nNội dung = file `data/samples/invalid/x_01_missing_course.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-9001\",\n  \"studentId\": \"SV011\",\n  \"fullName\": \"Sinh Viên 011\",\n  \"email\": \"sv011@student.example.com\",\n  \"phone\": \"0900000011\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "X2 - Sai kiểu dữ liệu",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = INVALID_VALUE\", () => pm.expect(body.error_code).to.eql(\"INVALID_VALUE\"));",
+                  "pm.test(\"field = credits\", () => pm.expect(body.field).to.eql(\"credits\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Phiếu Mobile có `creditCount` = \"ba\".\n\nNội dung = file `data/samples/invalid/x_02_bad_credits.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meta\": {\n    \"id\": \"M-9002\",\n    \"ts\": \"02/11/2026 09:15\"\n  },\n  \"student\": {\n    \"code\": \"sv012\",\n    \"name\": \"Sinh Viên 012\",\n    \"contact\": {\n      \"email\": \"sv012@student.example.com\",\n      \"phone\": \"0900000012\"\n    }\n  },\n  \"enrollment\": {\n    \"course\": \"int2204\",\n    \"creditCount\": \"ba\",\n    \"term\": \"2026-1\"\n  },\n  \"device\": {\n    \"os\": \"iOS\",\n    \"appVersion\": \"2.3.1\"\n  }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "X3 - Tra cứu đơn giá không thấy",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 422\", () => pm.response.to.have.status(422));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = PRICE_NOT_FOUND\", () => pm.expect(body.error_code).to.eql(\"PRICE_NOT_FOUND\"));",
+                  "pm.test(\"field = course_code\", () => pm.expect(body.field).to.eql(\"course_code\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Mã học phần XYZ9999 không có trong bảng giá.\n\nNội dung = file `data/samples/invalid/x_03_unknown_course.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-9003\">\n  <SinhVien ma=\"SV013\">\n    <HoTen>Sinh Viên 013</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"XYZ9999\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "X4 - Định dạng lạ",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = UNKNOWN_FORMAT\", () => pm.expect(body.error_code).to.eql(\"UNKNOWN_FORMAT\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "JSON hợp lệ nhưng không thuộc kênh nào.\n\nNội dung = file `data/samples/invalid/x_04_unknown_format.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"id\": 1, \"foo\": \"bar\"}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "X5 - XML hỏng",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = MALFORMED\", () => pm.expect(body.error_code).to.eql(\"MALFORMED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Thẻ XML không được đóng.\n\nNội dung = file `data/samples/invalid/x_05_malformed.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<PhieuDangKy soPhieu=\"L-9005\"><SinhVien ma=\"SV014\">\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Finance vẫn 10 khoản",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const list = pm.response.json();",
+                  "pm.test(\"Finance có 10 khoản học phí\", () => pm.expect(list.length).to.eql(10));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "description": "",
+            "url": {
+              "raw": "{{finance_url}}/api/tuition-charges",
+              "host": [
+                "{{finance_url}}"
+              ],
+              "path": [
+                "api",
+                "tuition-charges"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. S3 - Gửi lại phiếu đã xử lý",
+      "description": "Gửi lại 3 phiếu (mỗi kênh 1 phiếu). Finance không tạo thêm khoản nào.",
+      "item": [
+        {
+          "name": "Gửi lại Portal SV002",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = DUPLICATE_IGNORED\", () => pm.expect(body.status).to.eql(\"DUPLICATE_IGNORED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/a_portal_02_sv002.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1002\",\n  \"studentId\": \"SV002\",\n  \"fullName\": \"Sinh Viên 002\",\n  \"email\": \"sv002@student.example.com\",\n  \"phone\": \"0900000002\",\n  \"courseCode\": \"INT2204\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gửi lại Mobile SV005",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = DUPLICATE_IGNORED\", () => pm.expect(body.status).to.eql(\"DUPLICATE_IGNORED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/b_mobile_02_sv005.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"meta\": {\n    \"id\": \"M-2002\",\n    \"ts\": \"02/11/2026 09:15\"\n  },\n  \"student\": {\n    \"code\": \"sv005\",\n    \"name\": \"Sinh Viên 005\",\n    \"contact\": {\n      \"email\": \"sv005@student.example.com\",\n      \"phone\": \"0900000005\"\n    }\n  },\n  \"enrollment\": {\n    \"course\": \"int3117\",\n    \"creditCount\": \"3\",\n    \"term\": \"2026-1\"\n  },\n  \"device\": {\n    \"os\": \"iOS\",\n    \"appVersion\": \"2.3.1\"\n  }\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Gửi lại Legacy SV008",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = DUPLICATE_IGNORED\", () => pm.expect(body.status).to.eql(\"DUPLICATE_IGNORED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Nội dung = file `data/samples/valid/c_legacy_02_sv008.xml`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/xml"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-3002\">\n  <SinhVien ma=\"SV008\">\n    <HoTen>Sinh Viên 008</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"INT3319\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+              "options": {
+                "raw": {
+                  "language": "xml"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Finance vẫn 10 khoản",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const list = pm.response.json();",
+                  "pm.test(\"Finance có 10 khoản học phí\", () => pm.expect(list.length).to.eql(10));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "description": "",
+            "url": {
+              "raw": "{{finance_url}}/api/tuition-charges",
+              "host": [
+                "{{finance_url}}"
+              ],
+              "path": [
+                "api",
+                "tuition-charges"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Sự cố hệ thống (chạy tay, theo thứ tự)",
+      "description": "KHÔNG chạy bằng Run collection. Mỗi request cần một thao tác tay ghi trong mô tả.",
+      "item": [
+        {
+          "name": "S2 - Bảng giá không đọc được",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 503\", () => pm.response.to.have.status(503));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = LOOKUP_UNAVAILABLE\", () => pm.expect(body.error_code).to.eql(\"LOOKUP_UNAVAILABLE\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Trước khi gửi: đổi tên `data/course_prices.csv` thành `course_prices.csv.bak`. Sau khi gửi: đổi tên lại như cũ.\n\nNội dung = file `data/samples/scenarios/s1_portal_sv011.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1011\",\n  \"studentId\": \"SV011\",\n  \"fullName\": \"Sinh Viên 011\",\n  \"email\": \"sv011@student.example.com\",\n  \"phone\": \"0900000011\",\n  \"courseCode\": \"INT3319\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "S1a - Finance đang tắt",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 503\", () => pm.response.to.have.status(503));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = REJECTED\", () => pm.expect(body.status).to.eql(\"REJECTED\"));",
+                  "pm.test(\"error_code = FINANCE_UNAVAILABLE\", () => pm.expect(body.error_code).to.eql(\"FINANCE_UNAVAILABLE\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Trước khi gửi: nhấn Ctrl+C ở cửa sổ đang chạy Finance.\n\nNội dung = file `data/samples/scenarios/s1_portal_sv011.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1011\",\n  \"studentId\": \"SV011\",\n  \"fullName\": \"Sinh Viên 011\",\n  \"email\": \"sv011@student.example.com\",\n  \"phone\": \"0900000011\",\n  \"courseCode\": \"INT3319\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "S1b - Gửi lại sau khi bật Finance",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+                  "const body = pm.response.json();",
+                  "pm.test(\"status = FORWARDED\", () => pm.expect(body.status).to.eql(\"FORWARDED\"));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "description": "Trước khi gửi: chạy lại `python -m finance.app`.\n\nNội dung = file `data/samples/scenarios/s1_portal_sv011.json`.",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requestId\": \"P-1011\",\n  \"studentId\": \"SV011\",\n  \"fullName\": \"Sinh Viên 011\",\n  \"email\": \"sv011@student.example.com\",\n  \"phone\": \"0900000011\",\n  \"courseCode\": \"INT3319\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{adapter_url}}/api/registrations",
+              "host": [
+                "{{adapter_url}}"
+              ],
+              "path": [
+                "api",
+                "registrations"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Finance có 11 khoản",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+                  "const list = pm.response.json();",
+                  "pm.test(\"Finance có 11 khoản học phí\", () => pm.expect(list.length).to.eql(11));"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "description": "",
+            "url": {
+              "raw": "{{finance_url}}/api/tuition-charges",
+              "host": [
+                "{{finance_url}}"
+              ],
+              "path": [
+                "api",
+                "tuition-charges"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

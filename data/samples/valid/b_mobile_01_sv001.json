@@ -1,0 +1,10 @@
+{
+  "meta": { "id": "M-2001", "ts": "02/11/2026 08:30" },
+  "student": {
+    "code": "sv001",
+    "name": "Nguyễn Văn A",
+    "contact": { "email": "sv001@student.example.com", "phone": "0900000001" }
+  },
+  "enrollment": { "course": "int3306", "creditCount": "3", "term": "2026-1" },
+  "device": { "os": "Android", "appVersion": "2.3.1" }
+}

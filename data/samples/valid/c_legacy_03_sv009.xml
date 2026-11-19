@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PhieuDangKy soPhieu="L-3003">
+  <SinhVien ma="SV009">
+    <HoTen>Sinh Viên 009</HoTen>
+  </SinhVien>
+  <HocPhan ma="MAT1041" soTinChi="4"/>
+  <HocKy>HK1-2026</HocKy>
+  <NgayDangKy>02/11/2026</NgayDangKy>
+  <GhiChu>Nhập từ hệ thống cũ</GhiChu>
+</PhieuDangKy>

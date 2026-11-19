@@ -1,0 +1,12 @@
+{
+  "requestId": "P-1011",
+  "studentId": "SV011",
+  "fullName": "Sinh Viên 011",
+  "email": "sv011@student.example.com",
+  "phone": "0900000011",
+  "courseCode": "INT3319",
+  "credits": 3,
+  "semester": "2026-1",
+  "registeredAt": "2026-11-02T09:00:00+07:00",
+  "advisorNote": "Đã duyệt"
+}
