@@ -131,7 +131,7 @@ def create_app(catalog, send_fn, runtime_dir):
                     # Finance tra ma HTTP khong hop le
                     raise AdapterError(
                         "FINANCE_REJECTED",
-                        f"Finance tra ve HTTP {finance_status}",
+                        f"Finance trả về HTTP {finance_status}",
                         502
                     )
 

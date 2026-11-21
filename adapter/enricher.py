@@ -25,7 +25,7 @@ class PriceCatalog:
         except AdapterError:
             raise
         except Exception as e:
-            raise AdapterError("LOOKUP_UNAVAILABLE", f"Không thể đọc bảng giá: {e}", 503)
+            raise AdapterError("LOOKUP_UNAVAILABLE", "Không đọc được bảng giá", 503) from e
 
 
 def enrich(msg: dict, catalog: PriceCatalog) -> dict:

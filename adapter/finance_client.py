@@ -32,7 +32,7 @@ def send_charge(payload, base_url, timeout=3.0):
 
         raise AdapterError(
             "FINANCE_UNAVAILABLE",
-            "Finance khong phan hoi",
+            "Finance không phản hồi",
             503
         ) from exc
 
@@ -40,7 +40,7 @@ def send_charge(payload, base_url, timeout=3.0):
     if response.status_code not in (200, 201):
         raise AdapterError(
             "FINANCE_REJECTED",
-            f"Finance tra ve HTTP {response.status_code}",
+            f"Finance trả về HTTP {response.status_code}",
             502
         )
 
@@ -51,7 +51,7 @@ def send_charge(payload, base_url, timeout=3.0):
     except ValueError as exc:
         raise AdapterError(
             "FINANCE_REJECTED",
-            "Finance tra ve JSON khong hop le",
+            "Finance trả về JSON không hợp lệ",
             502
         ) from exc
 

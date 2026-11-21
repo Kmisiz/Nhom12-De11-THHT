@@ -32,7 +32,7 @@ def validate(msg):
         if value is None or value == "":
             raise AdapterError(
                 "MISSING_FIELD",
-                f"Thieu truong bat buoc: {field}",
+                f"Thiếu trường bắt buộc: {field}",
                 422,
                 field=field
             )
@@ -48,7 +48,7 @@ def validate(msg):
     ):
         raise AdapterError(
             "INVALID_VALUE",
-            "Ma sinh vien khong dung dinh dang",
+            "Mã sinh viên không đúng định dạng",
             422,
             field="student_id"
         )
@@ -62,7 +62,7 @@ def validate(msg):
     ):
         raise AdapterError(
             "INVALID_VALUE",
-            "Ma hoc phan khong dung dinh dang",
+            "Mã học phần không đúng định dạng",
             422,
             field="course_code"
         )
@@ -73,7 +73,7 @@ def validate(msg):
     if type(credits) is not int or not (1 <= credits <= 10):
         raise AdapterError(
             "INVALID_VALUE",
-            "So tin chi phai la so nguyen tu 1 den 10",
+            "Số tín chỉ phải là số nguyên từ 1 đến 10",
             422,
             field="credits"
         )
@@ -87,7 +87,7 @@ def validate(msg):
     ):
         raise AdapterError(
             "INVALID_VALUE",
-            "Hoc ky khong dung dinh dang",
+            "Học kỳ không đúng định dạng",
             422,
             field="semester"
         )
