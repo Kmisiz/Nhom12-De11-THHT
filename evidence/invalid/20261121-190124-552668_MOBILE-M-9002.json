@@ -1,0 +1,11 @@
+{
+  "trace_id": "MOBILE-M-9002",
+  "received_at": "2026-11-21T19:01:24.552668+07:00",
+  "source_system": "MOBILE",
+  "http_status": 422,
+  "error_code": "INVALID_VALUE",
+  "message": "So tin chi phai la so nguyen tu 1 den 10",
+  "field": "credits",
+  "stage": "validator",
+  "input": "{\n  \"meta\": {\n    \"id\": \"M-9002\",\n    \"ts\": \"02/11/2026 09:15\"\n  },\n  \"student\": {\n    \"code\": \"sv012\",\n    \"name\": \"Sinh Viên 012\",\n    \"contact\": {\n      \"email\": \"sv012@student.example.com\",\n      \"phone\": \"0900000012\"\n    }\n  },\n  \"enrollment\": {\n    \"course\": \"int2204\",\n    \"creditCount\": \"ba\",\n    \"term\": \"2026-1\"\n  },\n  \"device\": {\n    \"os\": \"iOS\",\n    \"appVersion\": \"2.3.1\"\n  }\n}\n"
+}

@@ -1,0 +1,1007 @@
+{
+	"id": "b56e9ff2-190e-4da5-8bbd-e818b08ef52a",
+	"name": "Chủ đề 11 - EIP Integration Adapter",
+	"timestamp": "2026-11-21T12:01:25.178Z",
+	"collection_id": "60348789-1eb1a36e-0658-4821-a857-abd248c9c714",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 60,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-11-21T12:01:22.158Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "df8a59c4-8e22-4343-a0e6-d753d2c4a8c6",
+			"name": "Adapter /health",
+			"url": "http://127.0.0.1:5000/health",
+			"time": 99,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = ok": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = ok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				99
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = ok": true
+				}
+			]
+		},
+		{
+			"id": "d036d6d8-edfb-4acb-ba51-a331dfa90a40",
+			"name": "Finance /health",
+			"url": "http://127.0.0.1:5001/health",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = ok": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = ok": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = ok": true
+				}
+			]
+		},
+		{
+			"id": "2499fb6d-1749-422f-80a3-d8665dbe82aa",
+			"name": "Portal - JSON phẳng (SV001)",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 48,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				48
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "0d7ee8a3-d40b-4556-8608-c94f1670c23c",
+			"name": "Mobile - JSON lồng (SV001, trùng)",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 42,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = DUPLICATE_IGNORED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = DUPLICATE_IGNORED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				42
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = DUPLICATE_IGNORED": true
+				}
+			]
+		},
+		{
+			"id": "fe355c97-aa65-46ef-829f-ed6a28358d62",
+			"name": "Legacy - XML (SV001, trùng)",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 21,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = DUPLICATE_IGNORED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = DUPLICATE_IGNORED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				21
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = DUPLICATE_IGNORED": true
+				}
+			]
+		},
+		{
+			"id": "bee710bf-284f-4ac7-a2de-3153f884be98",
+			"name": "Portal SV002 INT2204",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 24,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				24
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "890202ba-47e0-4880-8f04-ad429d408c5c",
+			"name": "Portal SV003 INT3319",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 86,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				86
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "82a057e3-b92b-46c1-a7fd-aa7c88f97fb3",
+			"name": "Portal SV004 MAT1041",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 23,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				23
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "bf2d443b-3b3f-4a09-92e3-6865040e7cb6",
+			"name": "Mobile SV005 INT3117",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 28,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				28
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "b998824c-3e89-4112-bac5-4730a7050a8c",
+			"name": "Mobile SV006 INT3306",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 24,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				24
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "1bbd34dd-d704-4307-8ad1-51980f8db03b",
+			"name": "Mobile SV007 INT2204",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 21,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				21
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "7913b361-015b-47dc-9a53-7c960caea897",
+			"name": "Legacy SV008 INT3319",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 36,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				36
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "a686146d-92f4-4901-8ea3-9487dffd3c26",
+			"name": "Legacy SV009 MAT1041",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 24,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				24
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "152b6268-9263-41b3-ba09-7b5ea699fa39",
+			"name": "Legacy SV010 INT3117",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 22,
+			"responseCode": {
+				"code": 201,
+				"name": "CREATED"
+			},
+			"tests": {
+				"HTTP 201": true,
+				"status = FORWARDED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = FORWARDED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				22
+			],
+			"allTests": [
+				{
+					"HTTP 201": true,
+					"status = FORWARDED": true
+				}
+			]
+		},
+		{
+			"id": "159abe62-9eae-4989-a7ee-a7a4d2d25afb",
+			"name": "Danh sách khoản học phí",
+			"url": "http://127.0.0.1:5001/api/tuition-charges",
+			"time": 8,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"Finance có 10 khoản học phí": true,
+				"Tổng tiền = 15.200.000 VND": true,
+				"Mọi khoản đều UNPAID": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Finance có 10 khoản học phí": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Tổng tiền = 15.200.000 VND": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Mọi khoản đều UNPAID": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				8
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"Finance có 10 khoản học phí": true,
+					"Tổng tiền = 15.200.000 VND": true,
+					"Mọi khoản đều UNPAID": true
+				}
+			]
+		},
+		{
+			"id": "000f22c8-174d-40f3-aada-3749812cc570",
+			"name": "X1 - Thiếu trường bắt buộc",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 11,
+			"responseCode": {
+				"code": 422,
+				"name": "UNPROCESSABLE ENTITY"
+			},
+			"tests": {
+				"HTTP 422": true,
+				"status = REJECTED": true,
+				"error_code = MISSING_FIELD": true,
+				"field = course_code": true
+			},
+			"testPassFailCounts": {
+				"HTTP 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = REJECTED": {
+					"pass": 1,
+					"fail": 0
+				},
+				"error_code = MISSING_FIELD": {
+					"pass": 1,
+					"fail": 0
+				},
+				"field = course_code": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				11
+			],
+			"allTests": [
+				{
+					"HTTP 422": true,
+					"status = REJECTED": true,
+					"error_code = MISSING_FIELD": true,
+					"field = course_code": true
+				}
+			]
+		},
+		{
+			"id": "f40173eb-0d71-4f5f-b801-54f2906d0806",
+			"name": "X2 - Sai kiểu dữ liệu",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 9,
+			"responseCode": {
+				"code": 422,
+				"name": "UNPROCESSABLE ENTITY"
+			},
+			"tests": {
+				"HTTP 422": true,
+				"status = REJECTED": true,
+				"error_code = INVALID_VALUE": true,
+				"field = credits": true
+			},
+			"testPassFailCounts": {
+				"HTTP 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = REJECTED": {
+					"pass": 1,
+					"fail": 0
+				},
+				"error_code = INVALID_VALUE": {
+					"pass": 1,
+					"fail": 0
+				},
+				"field = credits": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				9
+			],
+			"allTests": [
+				{
+					"HTTP 422": true,
+					"status = REJECTED": true,
+					"error_code = INVALID_VALUE": true,
+					"field = credits": true
+				}
+			]
+		},
+		{
+			"id": "268c4d9b-b38a-4265-9e05-76c0c0e0eca7",
+			"name": "X3 - Tra cứu đơn giá không thấy",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 12,
+			"responseCode": {
+				"code": 422,
+				"name": "UNPROCESSABLE ENTITY"
+			},
+			"tests": {
+				"HTTP 422": true,
+				"status = REJECTED": true,
+				"error_code = PRICE_NOT_FOUND": true,
+				"field = course_code": true
+			},
+			"testPassFailCounts": {
+				"HTTP 422": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = REJECTED": {
+					"pass": 1,
+					"fail": 0
+				},
+				"error_code = PRICE_NOT_FOUND": {
+					"pass": 1,
+					"fail": 0
+				},
+				"field = course_code": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				12
+			],
+			"allTests": [
+				{
+					"HTTP 422": true,
+					"status = REJECTED": true,
+					"error_code = PRICE_NOT_FOUND": true,
+					"field = course_code": true
+				}
+			]
+		},
+		{
+			"id": "d59948a4-36b7-4862-9f05-5e33f9d27b75",
+			"name": "X4 - Định dạng lạ",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 10,
+			"responseCode": {
+				"code": 400,
+				"name": "BAD REQUEST"
+			},
+			"tests": {
+				"HTTP 400": true,
+				"status = REJECTED": true,
+				"error_code = UNKNOWN_FORMAT": true
+			},
+			"testPassFailCounts": {
+				"HTTP 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = REJECTED": {
+					"pass": 1,
+					"fail": 0
+				},
+				"error_code = UNKNOWN_FORMAT": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				10
+			],
+			"allTests": [
+				{
+					"HTTP 400": true,
+					"status = REJECTED": true,
+					"error_code = UNKNOWN_FORMAT": true
+				}
+			]
+		},
+		{
+			"id": "8db0a6b0-0d3d-4b48-a155-b00684550744",
+			"name": "X5 - XML hỏng",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 10,
+			"responseCode": {
+				"code": 400,
+				"name": "BAD REQUEST"
+			},
+			"tests": {
+				"HTTP 400": true,
+				"status = REJECTED": true,
+				"error_code = MALFORMED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 400": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = REJECTED": {
+					"pass": 1,
+					"fail": 0
+				},
+				"error_code = MALFORMED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				10
+			],
+			"allTests": [
+				{
+					"HTTP 400": true,
+					"status = REJECTED": true,
+					"error_code = MALFORMED": true
+				}
+			]
+		},
+		{
+			"id": "6736e1df-3b95-49f8-b121-509dbadc0f3b",
+			"name": "Finance vẫn 10 khoản",
+			"url": "http://127.0.0.1:5001/api/tuition-charges",
+			"time": 5,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"Finance có 10 khoản học phí": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Finance có 10 khoản học phí": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"Finance có 10 khoản học phí": true
+				}
+			]
+		},
+		{
+			"id": "4f114e83-5928-40a5-9ab4-dfdc482dbcd6",
+			"name": "Gửi lại Portal SV002",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 15,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = DUPLICATE_IGNORED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = DUPLICATE_IGNORED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				15
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = DUPLICATE_IGNORED": true
+				}
+			]
+		},
+		{
+			"id": "d47a6694-21d1-4911-b67e-3065f0510aed",
+			"name": "Gửi lại Mobile SV005",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 23,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = DUPLICATE_IGNORED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = DUPLICATE_IGNORED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				23
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = DUPLICATE_IGNORED": true
+				}
+			]
+		},
+		{
+			"id": "70588d54-3181-4dcb-b3df-510176f71907",
+			"name": "Gửi lại Legacy SV008",
+			"url": "http://127.0.0.1:5000/api/registrations",
+			"time": 30,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"status = DUPLICATE_IGNORED": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"status = DUPLICATE_IGNORED": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				30
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"status = DUPLICATE_IGNORED": true
+				}
+			]
+		},
+		{
+			"id": "b6ea8675-d7c9-48ef-af0e-1f51d7277375",
+			"name": "Finance vẫn 10 khoản",
+			"url": "http://127.0.0.1:5001/api/tuition-charges",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"HTTP 200": true,
+				"Finance có 10 khoản học phí": true
+			},
+			"testPassFailCounts": {
+				"HTTP 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Finance có 10 khoản học phí": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"HTTP 200": true,
+					"Finance có 10 khoản học phí": true
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 650,
+	"collection": {
+		"requests": [
+			{
+				"id": "df8a59c4-8e22-4343-a0e6-d753d2c4a8c6",
+				"method": "GET"
+			},
+			{
+				"id": "d036d6d8-edfb-4acb-ba51-a331dfa90a40",
+				"method": "GET"
+			},
+			{
+				"id": "2499fb6d-1749-422f-80a3-d8665dbe82aa",
+				"method": "POST"
+			},
+			{
+				"id": "0d7ee8a3-d40b-4556-8608-c94f1670c23c",
+				"method": "POST"
+			},
+			{
+				"id": "fe355c97-aa65-46ef-829f-ed6a28358d62",
+				"method": "POST"
+			},
+			{
+				"id": "bee710bf-284f-4ac7-a2de-3153f884be98",
+				"method": "POST"
+			},
+			{
+				"id": "890202ba-47e0-4880-8f04-ad429d408c5c",
+				"method": "POST"
+			},
+			{
+				"id": "82a057e3-b92b-46c1-a7fd-aa7c88f97fb3",
+				"method": "POST"
+			},
+			{
+				"id": "bf2d443b-3b3f-4a09-92e3-6865040e7cb6",
+				"method": "POST"
+			},
+			{
+				"id": "b998824c-3e89-4112-bac5-4730a7050a8c",
+				"method": "POST"
+			},
+			{
+				"id": "1bbd34dd-d704-4307-8ad1-51980f8db03b",
+				"method": "POST"
+			},
+			{
+				"id": "7913b361-015b-47dc-9a53-7c960caea897",
+				"method": "POST"
+			},
+			{
+				"id": "a686146d-92f4-4901-8ea3-9487dffd3c26",
+				"method": "POST"
+			},
+			{
+				"id": "152b6268-9263-41b3-ba09-7b5ea699fa39",
+				"method": "POST"
+			},
+			{
+				"id": "159abe62-9eae-4989-a7ee-a7a4d2d25afb",
+				"method": "GET"
+			},
+			{
+				"id": "000f22c8-174d-40f3-aada-3749812cc570",
+				"method": "POST"
+			},
+			{
+				"id": "f40173eb-0d71-4f5f-b801-54f2906d0806",
+				"method": "POST"
+			},
+			{
+				"id": "268c4d9b-b38a-4265-9e05-76c0c0e0eca7",
+				"method": "POST"
+			},
+			{
+				"id": "d59948a4-36b7-4862-9f05-5e33f9d27b75",
+				"method": "POST"
+			},
+			{
+				"id": "8db0a6b0-0d3d-4b48-a155-b00684550744",
+				"method": "POST"
+			},
+			{
+				"id": "6736e1df-3b95-49f8-b121-509dbadc0f3b",
+				"method": "GET"
+			},
+			{
+				"id": "4f114e83-5928-40a5-9ab4-dfdc482dbcd6",
+				"method": "POST"
+			},
+			{
+				"id": "d47a6694-21d1-4911-b67e-3065f0510aed",
+				"method": "POST"
+			},
+			{
+				"id": "70588d54-3181-4dcb-b3df-510176f71907",
+				"method": "POST"
+			},
+			{
+				"id": "b6ea8675-d7c9-48ef-af0e-1f51d7277375",
+				"method": "GET"
+			}
+		]
+	}
+}

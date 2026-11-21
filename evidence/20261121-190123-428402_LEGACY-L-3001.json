@@ -1,0 +1,59 @@
+{
+  "trace_id": "LEGACY-L-3001",
+  "received_at": "2026-11-21T19:01:23.428402+07:00",
+  "source_system": "LEGACY",
+  "http_status": 200,
+  "response": {
+    "status": "DUPLICATE_IGNORED",
+    "message_id": "LEGACY-L-3001",
+    "trace_id": "LEGACY-L-3001",
+    "finance": {
+      "charge_id": 1,
+      "status": "DUPLICATE_IGNORED"
+    }
+  },
+  "stages": {
+    "input": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-3001\">\n  <SinhVien ma=\"SV001\">\n    <HoTen>Nguyễn Văn A</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"INT3306\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+    "normalized": {
+      "message_id": "LEGACY-L-3001",
+      "source_system": "LEGACY",
+      "student_id": "SV001",
+      "student_name": "Nguyễn Văn A",
+      "email": null,
+      "phone": null,
+      "course_code": "INT3306",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T00:00:00+07:00",
+      "note": "Nhập từ hệ thống cũ"
+    },
+    "enriched": {
+      "message_id": "LEGACY-L-3001",
+      "source_system": "LEGACY",
+      "student_id": "SV001",
+      "student_name": "Nguyễn Văn A",
+      "email": null,
+      "phone": null,
+      "course_code": "INT3306",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T00:00:00+07:00",
+      "note": "Nhập từ hệ thống cũ",
+      "course_name": "Phát triển ứng dụng Web",
+      "unit_price": 500000,
+      "amount": 1500000,
+      "currency": "VND"
+    },
+    "filtered": {
+      "message_id": "LEGACY-L-3001",
+      "student_id": "SV001",
+      "course_code": "INT3306",
+      "course_name": "Phát triển ứng dụng Web",
+      "semester": "2026-1",
+      "credits": 3,
+      "unit_price": 500000,
+      "amount": 1500000,
+      "currency": "VND"
+    }
+  }
+}

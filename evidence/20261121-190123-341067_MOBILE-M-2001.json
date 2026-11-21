@@ -1,0 +1,59 @@
+{
+  "trace_id": "MOBILE-M-2001",
+  "received_at": "2026-11-21T19:01:23.341067+07:00",
+  "source_system": "MOBILE",
+  "http_status": 200,
+  "response": {
+    "status": "DUPLICATE_IGNORED",
+    "message_id": "MOBILE-M-2001",
+    "trace_id": "MOBILE-M-2001",
+    "finance": {
+      "charge_id": 1,
+      "status": "DUPLICATE_IGNORED"
+    }
+  },
+  "stages": {
+    "input": "{\n  \"meta\": { \"id\": \"M-2001\", \"ts\": \"02/11/2026 08:30\" },\n  \"student\": {\n    \"code\": \"sv001\",\n    \"name\": \"Nguyễn Văn A\",\n    \"contact\": { \"email\": \"sv001@student.example.com\", \"phone\": \"0900000001\" }\n  },\n  \"enrollment\": { \"course\": \"int3306\", \"creditCount\": \"3\", \"term\": \"2026-1\" },\n  \"device\": { \"os\": \"Android\", \"appVersion\": \"2.3.1\" }\n}\n",
+    "normalized": {
+      "message_id": "MOBILE-M-2001",
+      "source_system": "MOBILE",
+      "student_id": "SV001",
+      "student_name": "Nguyễn Văn A",
+      "email": "sv001@student.example.com",
+      "phone": "0900000001",
+      "course_code": "INT3306",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T08:30:00+07:00",
+      "note": null
+    },
+    "enriched": {
+      "message_id": "MOBILE-M-2001",
+      "source_system": "MOBILE",
+      "student_id": "SV001",
+      "student_name": "Nguyễn Văn A",
+      "email": "sv001@student.example.com",
+      "phone": "0900000001",
+      "course_code": "INT3306",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T08:30:00+07:00",
+      "note": null,
+      "course_name": "Phát triển ứng dụng Web",
+      "unit_price": 500000,
+      "amount": 1500000,
+      "currency": "VND"
+    },
+    "filtered": {
+      "message_id": "MOBILE-M-2001",
+      "student_id": "SV001",
+      "course_code": "INT3306",
+      "course_name": "Phát triển ứng dụng Web",
+      "semester": "2026-1",
+      "credits": 3,
+      "unit_price": 500000,
+      "amount": 1500000,
+      "currency": "VND"
+    }
+  }
+}

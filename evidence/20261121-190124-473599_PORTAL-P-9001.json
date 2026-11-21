@@ -1,0 +1,29 @@
+{
+  "trace_id": "PORTAL-P-9001",
+  "received_at": "2026-11-21T19:01:24.473599+07:00",
+  "source_system": "PORTAL",
+  "http_status": 422,
+  "response": {
+    "status": "REJECTED",
+    "error_code": "MISSING_FIELD",
+    "message": "Thieu truong bat buoc: course_code",
+    "field": "course_code",
+    "trace_id": "PORTAL-P-9001"
+  },
+  "stages": {
+    "input": "{\n  \"requestId\": \"P-9001\",\n  \"studentId\": \"SV011\",\n  \"fullName\": \"Sinh Viên 011\",\n  \"email\": \"sv011@student.example.com\",\n  \"phone\": \"0900000011\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T09:00:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+    "normalized": {
+      "message_id": "PORTAL-P-9001",
+      "source_system": "PORTAL",
+      "student_id": "SV011",
+      "student_name": "Sinh Viên 011",
+      "email": "sv011@student.example.com",
+      "phone": "0900000011",
+      "course_code": null,
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T09:00:00+07:00",
+      "note": "Đã duyệt"
+    }
+  }
+}

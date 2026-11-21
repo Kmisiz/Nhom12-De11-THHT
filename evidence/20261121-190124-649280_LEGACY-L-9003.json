@@ -1,0 +1,29 @@
+{
+  "trace_id": "LEGACY-L-9003",
+  "received_at": "2026-11-21T19:01:24.649280+07:00",
+  "source_system": "LEGACY",
+  "http_status": 422,
+  "response": {
+    "status": "REJECTED",
+    "error_code": "PRICE_NOT_FOUND",
+    "message": "Không tìm thấy đơn giá cho mã XYZ9999",
+    "field": "course_code",
+    "trace_id": "LEGACY-L-9003"
+  },
+  "stages": {
+    "input": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<PhieuDangKy soPhieu=\"L-9003\">\n  <SinhVien ma=\"SV013\">\n    <HoTen>Sinh Viên 013</HoTen>\n  </SinhVien>\n  <HocPhan ma=\"XYZ9999\" soTinChi=\"3\"/>\n  <HocKy>HK1-2026</HocKy>\n  <NgayDangKy>02/11/2026</NgayDangKy>\n  <GhiChu>Nhập từ hệ thống cũ</GhiChu>\n</PhieuDangKy>\n",
+    "normalized": {
+      "message_id": "LEGACY-L-9003",
+      "source_system": "LEGACY",
+      "student_id": "SV013",
+      "student_name": "Sinh Viên 013",
+      "email": null,
+      "phone": null,
+      "course_code": "XYZ9999",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T00:00:00+07:00",
+      "note": "Nhập từ hệ thống cũ"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "trace_id": "a54d112077534d0e836a8ddb617cae6d",
+  "received_at": "2026-11-21T19:01:24.764000+07:00",
+  "source_system": null,
+  "http_status": 400,
+  "error_code": "MALFORMED",
+  "message": "Thông điệp XML không hợp lệ",
+  "field": null,
+  "stage": "normalizer",
+  "input": "<PhieuDangKy soPhieu=\"L-9005\"><SinhVien ma=\"SV014\">\n"
+}

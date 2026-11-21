@@ -1,0 +1,60 @@
+{
+  "trace_id": "PORTAL-P-1001",
+  "received_at": "2026-11-21T19:01:23.203919+07:00",
+  "source_system": "PORTAL",
+  "http_status": 201,
+  "response": {
+    "status": "FORWARDED",
+    "message_id": "PORTAL-P-1001",
+    "trace_id": "PORTAL-P-1001",
+    "finance": {
+      "charge_id": 1,
+      "payment_status": "UNPAID",
+      "status": "CREATED"
+    }
+  },
+  "stages": {
+    "input": "{\n  \"requestId\": \"P-1001\",\n  \"studentId\": \"SV001\",\n  \"fullName\": \"Nguyễn Văn A\",\n  \"email\": \"sv001@student.example.com\",\n  \"phone\": \"0900000001\",\n  \"courseCode\": \"INT3306\",\n  \"credits\": 3,\n  \"semester\": \"2026-1\",\n  \"registeredAt\": \"2026-11-02T08:30:00+07:00\",\n  \"advisorNote\": \"Đã duyệt\"\n}\n",
+    "normalized": {
+      "message_id": "PORTAL-P-1001",
+      "source_system": "PORTAL",
+      "student_id": "SV001",
+      "student_name": "Nguyễn Văn A",
+      "email": "sv001@student.example.com",
+      "phone": "0900000001",
+      "course_code": "INT3306",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T08:30:00+07:00",
+      "note": "Đã duyệt"
+    },
+    "enriched": {
+      "message_id": "PORTAL-P-1001",
+      "source_system": "PORTAL",
+      "student_id": "SV001",
+      "student_name": "Nguyễn Văn A",
+      "email": "sv001@student.example.com",
+      "phone": "0900000001",
+      "course_code": "INT3306",
+      "credits": 3,
+      "semester": "2026-1",
+      "registered_at": "2026-11-02T08:30:00+07:00",
+      "note": "Đã duyệt",
+      "course_name": "Phát triển ứng dụng Web",
+      "unit_price": 500000,
+      "amount": 1500000,
+      "currency": "VND"
+    },
+    "filtered": {
+      "message_id": "PORTAL-P-1001",
+      "student_id": "SV001",
+      "course_code": "INT3306",
+      "course_name": "Phát triển ứng dụng Web",
+      "semester": "2026-1",
+      "credits": 3,
+      "unit_price": 500000,
+      "amount": 1500000,
+      "currency": "VND"
+    }
+  }
+}

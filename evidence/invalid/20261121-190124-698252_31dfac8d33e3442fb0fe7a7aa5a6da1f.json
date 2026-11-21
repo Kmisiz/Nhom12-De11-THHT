@@ -1,0 +1,11 @@
+{
+  "trace_id": "31dfac8d33e3442fb0fe7a7aa5a6da1f",
+  "received_at": "2026-11-21T19:01:24.698252+07:00",
+  "source_system": null,
+  "http_status": 400,
+  "error_code": "UNKNOWN_FORMAT",
+  "message": "Không nhận diện được định dạng thông điệp",
+  "field": null,
+  "stage": "normalizer",
+  "input": "{\"id\": 1, \"foo\": \"bar\"}\n"
+}
