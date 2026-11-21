@@ -28,8 +28,10 @@ def create_app(db_path: str = "runtime/finance.db") -> Flask:
 
     @app.post("/api/tuition-charges")
     def create_charge():
-        payload = request.get_json(silent=True) or {}
-        missing = [f for f in REQUIRED_FIELDS if f not in payload]
+        payload = request.get_json(silent=True)
+        if not isinstance(payload, dict):
+            payload = {}
+        missing = [f for f in REQUIRED_FIELDS if payload.get(f) is None]
         if missing:
             return jsonify({"error": "INVALID_PAYLOAD", "missing": missing}), 400
 
